@@ -1,9 +1,440 @@
-# This file is machine-generated - editing it directly is not advised
+### A Pluto.jl notebook ###
+# v0.16.1
 
-[[AbstractTrees]]
-git-tree-sha1 = "03e0550477d86222521d254b741d470ba17ea0b5"
-uuid = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
-version = "0.3.4"
+using Markdown
+using InteractiveUtils
+
+# ╔═╡ e8595a60-222f-11ec-0595-c9717ac06507
+begin
+	using Plots,SymPy, LaTeXStrings, LinearAlgebra
+	import PlotlyJS
+	plotlyjs()
+end
+
+# ╔═╡ 431922d9-e97a-4300-a482-2d458b66c67a
+md""" ### Ejercicio 1
+Considere la cónica dada por $y = x^2 − 4x + 5$ y la recta $L$ que pasa por $(2, 7)$ con
+direcci´on $v = (1, 1)$
+"""
+
+# ╔═╡ 85cf0b95-4446-4e84-a6c3-f9d3fcf4cd61
+md"""
+1. En un mismo plano cartesiano grafique la recta y la c´onica, obtenga anal´ıticamente los
+puntos de intersecci´on entre ambas y m´arquelos en su gr´afico.
+
+2. Halle el ´area del tri´angulo definido por el v´ertice de la c´onica y los puntos de intersecci´on
+obtenidos anteriormente.
+"""
+
+# ╔═╡ 53b8d020-b4a9-4c74-b0cc-dba03b6edbd3
+# Definimos las variables s'imbolicas
+@syms x λ
+
+# ╔═╡ 4257606e-3eff-4124-aad3-517998f97d24
+md"""
+Definamos la conica
+"""
+
+# ╔═╡ 61b1bf99-507b-4379-b537-86ce040f1418
+y = x^2 - 4x + 5
+
+# ╔═╡ d17a8914-6ecf-4606-a664-7242d0f8f06c
+md"""
+Para la  recta tenemos la siguiente representaci'o 
+
+$$L  = \lambda (1, 1) + (2, 7)$$  
+
+pero para encontrar la interseccion con la par'abola va a ser m'as 'util representarlo en la forma can'onica de $y = m * x + b$
+
+$$(x,y) = ( \lambda + 2, \lambda + 7 )$$
+
+Igualando cada una de las componentes tenemos que
+
+$$y = \lambda + 7 = (x-2) + 7 = x + 5$$
+"""
+
+# ╔═╡ 2056778d-12f0-4325-920f-f6c7e453918b
+L =	x + 5
+
+# ╔═╡ 4f6feaf8-5322-4afc-b31d-211761e222c2
+md"""
+Graficando ambas 
+"""
+
+# ╔═╡ f676a35a-c61e-4547-b176-211dd3dc647b
+begin
+	p = plot()
+	plot!(y,label=sympy.latex(y),xlims=(-2,6))
+	plot!(L, label=sympy.latex(L))
+end
+
+# ╔═╡ d8e3eda0-cada-4047-81cc-137a54e1b5e6
+md"""
+Calculamos la intersecci'on entre la recta y la para'bola
+
+`solve` busca las soluciones del sistema $S = 0$ entonces planteamos la igualdad como
+$S = L - y = 0$ que es equivalente a tener $L=y$
+"""
+
+# ╔═╡ 897cfd67-1be7-40e4-87d9-c11bc9de55d4
+interseccion = solve(y - L)
+
+# ╔═╡ 67e7f9f5-6e78-4579-97f7-7c0349b39afd
+y_interseccion = y.(interseccion)
+
+# ╔═╡ 4d6550b8-4e9d-4437-84bd-d978e33bfdb8
+md"""
+Agregamos los puntos de la intersecci'on al gr'afico
+"""
+
+# ╔═╡ 997c5ff7-ac5d-484f-bcdf-a89194d112ee
+p2 = scatter!(interseccion,y_interseccion,color=:black,label="interseccion",ax=p)
+
+# ╔═╡ 19f1f8b8-0f5c-4388-b550-f4cdd7619311
+md"""
+Calculamos el vertice usando la formula de $x_{vert} = \frac{-b}{2a}$ 
+y en nuestro caso queda 
+
+$$x_{vert} = \frac{-(-4)}{2*1} = 2$$
+$$y_{vert} = y(x_{vert}) = 2^{2} - 4 * 2 + 5 = 4 - 8 + 5 = 1$$
+"""
+
+# ╔═╡ 8e1588d8-1d7a-4151-b8a1-afc3c1298887
+p3 = scatter!([2],[1],color=:green,label="vertice",ax=p2)
+
+# ╔═╡ 09baa7ce-fc86-42a5-8130-3c8125c93f5b
+md"""
+Entonces ya tenemos los tres vertices del triangulo
+"""
+
+# ╔═╡ 653aa355-0c9d-4520-befd-d3f91678ffaa
+begin
+	# defino con decimales por una cuestion del programa
+	v₁ = [0.0, 5.0]
+	v₂ = [5.0, 10.0]
+	v₃ = [2.0, 1.0]
+	nothing
+end
+
+# ╔═╡ 1938fc99-5366-4bc0-a2b3-892d7281db93
+md"""
+Ahora para hallar el area vamos a utilizar el determinante entre dos vectores que definan el triangulo. Voy a considerar los vectores que van desde el vertice $v_{3}$ a los dos puntos de las intersecciones, abusando un poco la notacion $V_{1,3} = v_{1} - v_{3}$, $V_{1,3} = v_{2} - v_{3}$
+"""
+
+# ╔═╡ 0f723758-c34e-4a3b-ad72-853cc23b29fc
+m = [v₁-v₃ v₂-v₃]
+
+# ╔═╡ 253ae086-b3b0-4243-b05d-4e575166aa53
+det(m)
+
+# ╔═╡ 9003d85b-eaf0-44f9-b2b7-1dd990e4fd76
+md"""
+El determinante es negativo porque estamos tomando como primer vector el que est'a m'as a la izquierda. Si invertimos el orden en el que armamos la matriz, el determinante va a dar positivo, estamos alternando dos columnas :)
+
+En conclusion el a'rea es el valor absoluto del determinante dividido dos, entonces tenemos que 
+
+``area =`` $(abs(det(m))/2)
+"""
+
+# ╔═╡ c18c2f4b-1e5f-463f-8464-0a6387896efc
+md"""
+## Ejercicio 2. 
+
+Sean $\pi : x + 2y + 2z = 12$ y $P = (1, 0, 1)$.
+
+a) Hallar el punto de π que se encuentra a menor distancia del punto P y calcular la distancia
+de $P$ al plano $\pi$.
+
+b) Hallar el volumen del tetraedro (pir´amide de base triangular) definido por P y las intersecciones del plano π con los ejes coordenados. (Recuerde que el volumen del tetraedo es un
+sexto del volumen del paralelep´ıdedo)
+"""
+
+# ╔═╡ 0f3486cc-8de9-452c-a0a1-b8c5277c1592
+n = [1, 2, 2]
+
+# ╔═╡ f4ee2c3e-7a1b-4d4a-99cf-0dda3ae572d7
+P = [1,0,1]
+
+# ╔═╡ cf0c4904-6b99-4af7-8aee-d03593bc2091
+L₂ = λ*n + P 
+
+# ╔═╡ e86f3da1-ab64-4582-9fc7-8f12966c318f
+π(v) = n ⋅ v - 12
+
+# ╔═╡ 84f78af9-2866-404e-a121-3e3c6afe617b
+# SymMatrix esta indexada desde 0 :(
+π(L₂)
+
+# ╔═╡ 9bf041fa-c284-4425-831c-2d8a207e54e2
+λₛₒₗ = solve(π(L₂))[1]
+
+# ╔═╡ 512fadab-9352-4d45-b73e-d754b30114e4
+Q = subs.(L₂,λ => λₛₒₗ)
+
+# ╔═╡ 6612a222-06c1-47a8-b024-146ca8caea08
+# Un poco de sanity check
+π(Q)
+
+# ╔═╡ ef868e86-0a6a-47fb-b2a5-d9190cd03c0a
+md"""
+Con esto ya podemos calcular la distancia entre $P$ y $Q$
+"""
+
+# ╔═╡ 74bf0f00-bc45-4d26-9c61-f164de3d21e0
+md"""
+``dist(P,Q) = \vert P- Q \vert =`` $(norm(P - Q))
+"""
+
+# ╔═╡ 50432a00-fdbe-448e-a6c1-89b1d01d435d
+md"""
+#### b) Buscamos la interseccion de $\pi$ con los ejes coordenados
+"""
+
+# ╔═╡ 4bf801a5-b443-46d1-a110-ab8096527116
+md"""
+Primero definimos el vector can'onico en una direccio'on
+"""
+
+# ╔═╡ 2136e05b-bef2-4dc8-8723-3fbb8360cba0
+e₁ = [1,0,0]
+
+# ╔═╡ 5532b807-94e2-4ff2-9b65-41d1423863c6
+md"""
+Como queremos encontrar la intersecci'on entre el eje y el plano, definimos la recta que sigue al eje coordenado como
+"""
+
+# ╔═╡ 904d25d1-2244-4f76-ac1c-b1fef76ff41a
+λ * e₁
+
+# ╔═╡ 2ba19d1c-f22e-47c8-b81c-979e0edd7348
+md"""
+Cuando lo evaluamos en la definici'on del plano tenemos que la interseccio'n occurre cuando la siguiente es igual a $0$
+"""
+
+# ╔═╡ 9eeb302c-a277-437d-9e95-345b72d1a3a4
+π(λ * e₁)
+
+# ╔═╡ 15949e72-93cf-4aa6-8524-5b55fe9eb229
+md"""
+Y eso ocurre cuando ``\lambda =`` $(solve(π(λ * e₁)))
+"""
+
+# ╔═╡ 6935e6f6-e926-4766-89a4-8d86408cc15d
+interseccion_con_π(v) = solve(π(λ * v))[1]
+
+# ╔═╡ aed97c10-bcae-4552-b522-afb0a6073c7a
+md"""
+Extendemos el c'alculo de la intersecci'on del plano con los otros dos ejes obteniendo los siguentes puntos 
+"""
+
+# ╔═╡ 760596e6-3937-4024-b3b4-7bfae97c4a4f
+begin
+	e₂ = [0,1,0]
+	e₃ = [0,0,1]
+	x₁ = interseccion_con_π(e₁) * e₁
+	x₂ = interseccion_con_π(e₂) * e₂
+	x₃ = interseccion_con_π(e₃) * e₃
+	x₁, x₂, x₃
+end
+
+# ╔═╡ 64d47104-23e7-492c-aa5e-c6eee7f6d10d
+md"""
+Para tener un poco m'as de intuici'on los graficamos
+"""
+
+# ╔═╡ ff31fe54-2f96-4e12-bf62-395dd29fa515
+begin 
+	figura = scatter3d([P[1]],[P[2]],[P[3]],label="P",xlabel="x",ylabel="y",zlabel="z")
+	for p in [x₁, x₂, x₃]
+		scatter3d!([p[1]],[p[2]],[p[3]],label=false,ax=figura)
+	end
+	figura
+end
+
+# ╔═╡ 6867d0da-516e-4924-b3f3-be7bbe75d4fc
+md"""
+Para calcular el volumen primero consideramos los vectores que van de $P$ a cada uno de los tres puntos $V_{i}$ que encontramos antes. Para eso calculamos $V_{i} - P$, para cada uno de los ejes y los ordenamos a cada uno como una columna de una matriz de manera de que podamos calcular el determinante
+"""
+
+# ╔═╡ 9ca33e7d-aa40-4970-9072-bcf0f754ec04
+M = [x₁ x₂ x₃] .- P
+
+# ╔═╡ fe385398-3bd1-4662-8411-e2c9beda9a9f
+md"""
+Que tiene el determinante igual a
+"""
+
+# ╔═╡ 672d62df-7c33-4260-8c4f-a72e8a900bd3
+det(M)
+
+# ╔═╡ c389944d-1d91-44aa-a28d-d0848bb10228
+md"""
+Usando la ayuda del enunciado tenemos que el volumen del tetaedro es ``\frac{\vert det(M)\vert}{6} = `` $(det(M)/6)
+"""
+
+# ╔═╡ e7d5a0e0-0b6b-4012-88cd-7e50283fb721
+md"""
+### Ejercicio 3. 
+
+Para $\alpha \in \mathbb{R}$ considere la matriz $A \in \mathbb{R}^{3×3}$ dada por
+
+$\left[ 
+\begin{array}{rrr}
+ 1       & 0          & \alpha     \\
+ \alpha  & \alpha - 1 & \alpha^{2} \\
+ 0       & 1          & \alpha - 2
+\end{array}\right]$
+
+
+1. Halle todos los valores de $\alpha$ para los cuales $A^{2021} − A^{2022}$ no resulte inversible.
+
+2. Ponga $\alpha = 2$. Utilice el m´etodo de Gauss para resolver
+
+$$Ax = e_{1} + e_{2} − e_{3}$$
+
+`INDICANDO TODAS LAS OPERACIONES DE FILAS QUE UTILIZA. Exhiba la solucien forma param´etrica y la matriz escalonada reducida del sistema; se˜nale el rango de
+A.`
+"""
+
+# ╔═╡ fc2349c9-fb1f-4ce3-94fc-adb98f3170b8
+# Definimos el simbolo
+@syms α
+
+# ╔═╡ 30e16586-b504-4332-9f6c-cdeb3f9c686c
+A = [1 0 α;
+	α α-1 α^2;
+	0 1 α-2]
+
+# ╔═╡ 2f8356bc-311a-4826-861e-4852ed01bca1
+md"""
+El ejercicio nos pide que calculemos cuando la siguiente matriz no es inversible $A^{2021} − A^{2022}$, lo cual parece una locura. Pero recordemos que una manera de evaluar si una matriz es inversible es a partir del determinante. Y la matriz va a ser inversible en el caso de que su determinante sea distinto de 0 
+"""
+
+# ╔═╡ 45d7938f-a9ff-4a21-b0f8-74a7b69e1a3d
+md"""
+$\begin{align}
+det(A^{2021} − A^{2022}) &= det( A^{2021}*(I-A)  ) \\
+                         &= det( A^{2021} ) * det(I-A)\\
+                         &= det( A )^{2021} * det(I-A)
+\end{align}$
+"""
+
+# ╔═╡ af547106-640f-4d89-b96d-b1d625822697
+I - A
+
+# ╔═╡ a2779834-7808-4bad-a97a-bc90dba2adc7
+determinante = det(A)^2021 * det(I-A)
+
+# ╔═╡ d9ef00bd-1ac5-4406-9cb7-ae9d90d2387e
+md"""
+El determinante se anula en el caso de que cualquiera de los terminos sea igual a cero, entonces tenemos que
+"""
+
+# ╔═╡ 76c7aed0-4bac-4a03-8a07-00583c571c52
+solve(det(A))
+
+# ╔═╡ 180d6fe0-baeb-4c05-bfc9-213a6f1ec07c
+solve(det(I-A))
+
+# ╔═╡ a7da009c-b867-46d2-84a2-087287521aa8
+md"""
+Entonces es la matriz no es inversible si $\alpha \in \{0,1,2\}$
+"""
+
+# ╔═╡ 5522536b-a0df-41f8-8525-856923f49104
+md"""
+Para resolver el punto b), reemplazamos $\alpha = 2$. Notemos que es uno de los valores en los que el la matriz no era inversible, eso nos esta diciendo que el sistema no est'a completamete determinado.
+"""
+
+# ╔═╡ 337404a1-514b-4f40-9aa7-738d0c07d34f
+Aₛ = subs.(A, α=>2)
+
+# ╔═╡ 7dcb7519-f6cc-47b6-bbf2-1896a0053a85
+md"""
+Resolviendo el sistema por el metodo de Gauss-Jordan
+
+$$A x = (1,1,-1)$$
+"""
+
+# ╔═╡ dd6b45de-fa40-4697-a372-d7f6a75bc704
+md"""
+Llegamos a que la solucion es el siguiente vector
+"""
+
+# ╔═╡ e052a4ad-90a0-4f7f-a1e7-a35b92270d74
+Aₛ\[1,1,-1]
+
+# ╔═╡ 65dcc377-8278-4c08-867b-012065989b1f
+md"""
+Que representa la recta 
+
+``
+L_{s} = λ (-2,0,1) + (1,-1,0)
+``
+"""
+
+# ╔═╡ c2c157cb-29fa-488b-a5dd-caef9e392c6b
+md"""
+### Ejercicio 4.
+
+a) Sean $u, v \in \mathbb{R}^{2}$ dos vectores tales que $det(u, v) = 3$.
+Hallar el ´area del paralelogramo determinado por los vectores $2u + 3v$ y $u − 4v$.
+
+b) Decidir si la siguiente afirmaci´on es verdadera o falsa. Si es verdadera, dar una demostraci´on. Si es falsa, dar un contraejemplo.
+
+Sean $L_{1}$ y $L_{2}$ son dos rectas en $R^{3}$
+
+Si $L_{1} \cap L_{2} = \emptyset$, entonces $L_{1}$ y $L_{2}$ son paralelas.
+"""
+
+# ╔═╡ 1dd55ddd-2c09-4d8c-83d3-442ebcf0d579
+# definimos los vectores simbolicos
+begin
+	@syms u[1:2] v[1:2]
+end
+
+# ╔═╡ 0bd81932-75a6-4b74-a264-bb16ae798a44
+det([u v])
+
+# ╔═╡ c3ca6592-a758-40fc-96c5-e8609071697f
+det([2u+3v u-4v])
+
+# ╔═╡ 279a2774-a565-4ffa-9577-b2e987abed37
+simplify(det([2u+3v u-4v]) / det([u v]))
+
+# ╔═╡ 7760aee0-6ea6-432a-973f-4ab968f7f314
+md"""
+b) 
+"""
+
+# ╔═╡ 1dd28947-9fa2-42bc-9666-6e1b5e12a147
+md"""
+La afirmacion es falsa
+"""
+
+# ╔═╡ 3cf6ffc2-0f08-41f7-adaa-9fa22f585881
+# Para referencia
+repr("text/latex",A);
+
+# ╔═╡ 00000000-0000-0000-0000-000000000001
+PLUTO_PROJECT_TOML_CONTENTS = """
+[deps]
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PlotlyJS = "f0f68f2c-4968-5e81-91da-67840de0976a"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
+
+[compat]
+LaTeXStrings = "~1.2.1"
+PlotlyJS = "~0.18.7"
+Plots = "~1.22.3"
+SymPy = "~1.0.52"
+"""
+
+# ╔═╡ 00000000-0000-0000-0000-000000000002
+PLUTO_MANIFEST_TOML_CONTENTS = """
+# This file is machine-generated - editing it directly is not advised
 
 [[Adapt]]
 deps = ["LinearAlgebra"]
@@ -13,12 +444,6 @@ version = "3.3.1"
 
 [[ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
-
-[[ArrayInterface]]
-deps = ["Compat", "IfElse", "LinearAlgebra", "Requires", "SparseArrays", "Static"]
-git-tree-sha1 = "b8d49c34c3da35f220e7295659cd0bab8e739fed"
-uuid = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
-version = "3.1.33"
 
 [[Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
@@ -31,11 +456,6 @@ version = "0.1.0"
 
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
-
-[[Bijections]]
-git-tree-sha1 = "705e7822597b432ebe152baa844b49f8026df090"
-uuid = "e2ed5e7c-b2de-5872-ae92-c73ca462fb04"
-version = "0.1.3"
 
 [[BinDeps]]
 deps = ["Libdl", "Pkg", "SHA", "URIParser", "Unicode"]
@@ -63,9 +483,9 @@ version = "1.16.1+0"
 
 [[ChainRulesCore]]
 deps = ["Compat", "LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "1417269aa4238b85967827f11f3e0ce5722b7bf0"
+git-tree-sha1 = "e8a30e8019a512e4b6c56ccebc065026624660e8"
 uuid = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
-version = "1.7.1"
+version = "1.7.0"
 
 [[ColorSchemes]]
 deps = ["ColorTypes", "Colors", "FixedPointNumbers", "Random"]
@@ -84,11 +504,6 @@ deps = ["ColorTypes", "FixedPointNumbers", "Reexport"]
 git-tree-sha1 = "417b0ed7b8b838aa6ca0a87aadf1bb9eb111ce40"
 uuid = "5ae59095-9a9b-59fe-a467-6f913c188581"
 version = "0.12.8"
-
-[[Combinatorics]]
-git-tree-sha1 = "08c8b6831dc00bfea825826be0bc8336fc369860"
-uuid = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
-version = "1.0.2"
 
 [[CommonEq]]
 git-tree-sha1 = "d1beba82ceee6dc0fce8cb6b80bf600bbde66381"
@@ -110,28 +525,11 @@ version = "3.39.0"
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 
-[[CompositeTypes]]
-git-tree-sha1 = "d5b014b216dc891e81fea299638e4c10c657b582"
-uuid = "b152e2b5-7a66-4b01-a709-34e65c35f657"
-version = "0.1.2"
-
 [[Conda]]
 deps = ["JSON", "VersionParsing"]
 git-tree-sha1 = "299304989a5e6473d985212c28928899c74e9421"
 uuid = "8f4d0f93-b110-5947-807f-2305c1781a2d"
 version = "1.5.2"
-
-[[Configurations]]
-deps = ["ExproniconLite", "OrderedCollections", "TOML"]
-git-tree-sha1 = "41d153a50b001a7c534f19e263540cca1a4e7cf3"
-uuid = "5218b696-f38b-4ac9-8b61-a12ec717816d"
-version = "0.16.4"
-
-[[ConstructionBase]]
-deps = ["LinearAlgebra"]
-git-tree-sha1 = "f74e9d5388b8620b4cee35d4c5a618dd4dc547f4"
-uuid = "187b0558-2788-49d3-abe0-74a17ed4e7c9"
-version = "1.3.0"
 
 [[Contour]]
 deps = ["StaticArrays"]
@@ -163,21 +561,9 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 deps = ["Mmap"]
 uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 
-[[DiffRules]]
-deps = ["NaNMath", "Random", "SpecialFunctions"]
-git-tree-sha1 = "7220bc21c33e990c14f4a9a319b1d242ebc5b269"
-uuid = "b552c78f-8df3-52c6-915a-8e097449b14b"
-version = "1.3.1"
-
 [[Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
-
-[[Distributions]]
-deps = ["ChainRulesCore", "FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SparseArrays", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "a9b99024b57d12fb19892d3f2230856f6d9671a4"
-uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
-version = "0.25.17"
 
 [[DocStringExtensions]]
 deps = ["LibGit2"]
@@ -185,21 +571,9 @@ git-tree-sha1 = "a32185f5428d3986f47c2ab78b1f216d5e6cc96f"
 uuid = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 version = "0.8.5"
 
-[[DomainSets]]
-deps = ["CompositeTypes", "IntervalSets", "LinearAlgebra", "StaticArrays", "Statistics"]
-git-tree-sha1 = "627844a59d3970db8082b778e53f86741d17aaad"
-uuid = "5b8099bc-c8ec-5219-889f-1d9e522a28bf"
-version = "0.5.7"
-
 [[Downloads]]
 deps = ["ArgTools", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
-
-[[DynamicPolynomials]]
-deps = ["DataStructures", "Future", "LinearAlgebra", "MultivariatePolynomials", "MutableArithmetics", "Pkg", "Reexport", "Test"]
-git-tree-sha1 = "1b4665a7e303eaa7e03542cfaef0730cb056cb00"
-uuid = "7c1d4256-1411-5781-91ec-d7bc3513ac07"
-version = "0.3.21"
 
 [[EarCut_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -207,27 +581,11 @@ git-tree-sha1 = "3f3a2501fa7236e9b911e0f7a588c657e822bb6d"
 uuid = "5ae413db-bbd1-5e63-b57d-d24a61df00f5"
 version = "2.2.3+0"
 
-[[EllipsisNotation]]
-deps = ["ArrayInterface"]
-git-tree-sha1 = "8041575f021cba5a099a456b4163c9a08b566a02"
-uuid = "da5c29d0-fa7d-589e-88eb-ea29b0a81949"
-version = "1.1.0"
-
 [[Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "b3bfd02e98aedfa5cf885665493c5598c350cd2f"
 uuid = "2e619515-83b5-522b-bb60-26c02a35a201"
 version = "2.2.10+0"
-
-[[ExprTools]]
-git-tree-sha1 = "b7e3d17636b348f005f11040025ae8c6f645fe92"
-uuid = "e2ba6199-217a-4e67-a87a-7c52f15ade04"
-version = "0.1.6"
-
-[[ExproniconLite]]
-git-tree-sha1 = "45b421f664eba4cd4bed8e5e706f69f2ccd8fcb3"
-uuid = "55351af7-c7e9-48d6-89ff-24e801d99491"
-version = "0.6.10"
 
 [[FFMPEG]]
 deps = ["FFMPEG_jll"]
@@ -243,12 +601,6 @@ version = "4.4.0+0"
 
 [[FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
-
-[[FillArrays]]
-deps = ["LinearAlgebra", "Random", "SparseArrays", "Statistics"]
-git-tree-sha1 = "29890dfbc427afa59598b8cfcc10034719bd7744"
-uuid = "1a297f60-69ca-5386-bcde-b61e274b549b"
-version = "0.12.6"
 
 [[FixedPointNumbers]]
 deps = ["Statistics"]
@@ -285,16 +637,6 @@ deps = ["Test"]
 git-tree-sha1 = "04cb9cfaa6ba5311973994fe3496ddec19b6292a"
 uuid = "de31a74c-ac4f-5751-b3fd-e18cd04993ca"
 version = "0.5.0"
-
-[[Future]]
-deps = ["Random"]
-uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
-
-[[FuzzyCompletions]]
-deps = ["REPL"]
-git-tree-sha1 = "2cc2791b324e8ed387a91d7226d17be754e9de61"
-uuid = "fb4132e2-a121-4a70-b8a1-d5b831dcdcc2"
-version = "0.4.3"
 
 [[GLFW_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Libglvnd_jll", "Pkg", "Xorg_libXcursor_jll", "Xorg_libXi_jll", "Xorg_libXinerama_jll", "Xorg_libXrandr_jll"]
@@ -361,22 +703,6 @@ git-tree-sha1 = "6187bb2d5fcbb2007c39e7ac53308b0d371124bd"
 uuid = "9fb69e20-1954-56bb-a84f-559cc56a8ff7"
 version = "0.2.2"
 
-[[HypertextLiteral]]
-git-tree-sha1 = "72053798e1be56026b81d4e2682dbe58922e5ec9"
-uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
-version = "0.9.0"
-
-[[IOCapture]]
-deps = ["Logging", "Random"]
-git-tree-sha1 = "f7be53659ab06ddc986428d3a9dcc95f6fa6705a"
-uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
-version = "0.2.2"
-
-[[IfElse]]
-git-tree-sha1 = "28e837ff3e7a6c3cdb252ce49fb412c8eb3caeef"
-uuid = "615f187c-cbe4-4ef1-ba3b-2fcf58d6d173"
-version = "0.1.0"
-
 [[IniFile]]
 deps = ["Test"]
 git-tree-sha1 = "098e4d2c533924c921f9f9847274f2ad89e018b8"
@@ -386,12 +712,6 @@ version = "0.5.0"
 [[InteractiveUtils]]
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
-
-[[IntervalSets]]
-deps = ["Dates", "EllipsisNotation", "Statistics"]
-git-tree-sha1 = "3cc368af3f110a767ac786560045dceddfc16758"
-uuid = "8197267c-284f-5f27-9208-e0e47529a953"
-version = "0.5.3"
 
 [[IrrationalConstants]]
 git-tree-sha1 = "f76424439413893a832026ca355fe273e93bce94"
@@ -454,12 +774,6 @@ version = "2.10.1+0"
 git-tree-sha1 = "c7f1c695e06c01b95a67f0cd1d34994f3e7db104"
 uuid = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 version = "1.2.1"
-
-[[LabelledArrays]]
-deps = ["ArrayInterface", "LinearAlgebra", "MacroTools", "StaticArrays"]
-git-tree-sha1 = "8f5fd068dfee92655b79e0859ecad8b492dfe8b1"
-uuid = "2ee39098-c373-598a-b85f-a56591580800"
-version = "1.6.5"
 
 [[Latexify]]
 deps = ["Formatting", "InteractiveUtils", "LaTeXStrings", "MacroTools", "Markdown", "Printf", "Requires"]
@@ -590,29 +904,11 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 [[MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 
-[[MsgPack]]
-deps = ["Serialization"]
-git-tree-sha1 = "a8cbf066b54d793b9a48c5daa5d586cf2b5bd43d"
-uuid = "99f44e22-a591-53d1-9472-aa23ef4bd671"
-version = "1.1.0"
-
-[[MultivariatePolynomials]]
-deps = ["DataStructures", "LinearAlgebra", "MutableArithmetics"]
-git-tree-sha1 = "45c9940cec79dedcdccc73cc6dd09ea8b8ab142c"
-uuid = "102ac46a-7ee4-5c85-9060-abc95bfdeaa3"
-version = "0.3.18"
-
 [[Mustache]]
 deps = ["Printf", "Tables"]
 git-tree-sha1 = "36995ef0d532fe08119d70b2365b7b03d4e00f48"
 uuid = "ffc61752-8dc7-55ee-8c37-f3e9cdd09e70"
 version = "1.0.10"
-
-[[MutableArithmetics]]
-deps = ["LinearAlgebra", "SparseArrays", "Test"]
-git-tree-sha1 = "3927848ccebcc165952dc0d9ac9aa274a87bfe01"
-uuid = "d8a4904e-b15c-11e9-3269-09a3773c0cb0"
-version = "0.2.20"
 
 [[Mux]]
 deps = ["AssetRegistry", "Base64", "HTTP", "Hiccup", "Pkg", "Sockets", "WebSockets"]
@@ -672,12 +968,6 @@ git-tree-sha1 = "b2a7af664e098055a7529ad1a900ded962bca488"
 uuid = "2f80f16e-611a-54ab-bc61-aa92de5b98fc"
 version = "8.44.0+0"
 
-[[PDMats]]
-deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse"]
-git-tree-sha1 = "4dd403333bcf0909341cfe57ec115152f937d7d8"
-uuid = "90014a1f-27ba-587c-ab20-58faa44d9150"
-version = "0.11.1"
-
 [[Parameters]]
 deps = ["OrderedCollections", "UnPack"]
 git-tree-sha1 = "34c0e9ad262e5f7fc75b10a9952ca7692cfc5fbe"
@@ -686,9 +976,9 @@ version = "0.12.3"
 
 [[Parsers]]
 deps = ["Dates"]
-git-tree-sha1 = "a8709b968a1ea6abc2dc1967cb1db6ac9a00dfb6"
+git-tree-sha1 = "9d8c00ef7a8d110787ff6f170579846f776133a9"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.0.5"
+version = "2.0.4"
 
 [[Pidfile]]
 deps = ["FileWatching", "Test"]
@@ -736,18 +1026,6 @@ git-tree-sha1 = "cfbd033def161db9494f86c5d18fbf874e09e514"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 version = "1.22.3"
 
-[[Pluto]]
-deps = ["Base64", "Configurations", "Dates", "Distributed", "FileWatching", "FuzzyCompletions", "HTTP", "InteractiveUtils", "Logging", "Markdown", "MsgPack", "Pkg", "REPL", "Sockets", "TableIOInterface", "Tables", "UUIDs"]
-git-tree-sha1 = "d4955d6b5267ed826d03e3f05cc23426492b23c9"
-uuid = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
-version = "0.16.1"
-
-[[PlutoUI]]
-deps = ["Base64", "Dates", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "Markdown", "Random", "Reexport", "UUIDs"]
-git-tree-sha1 = "d1fb76655a95bf6ea4348d7197b22e889a4375f4"
-uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-version = "0.7.14"
-
 [[Preferences]]
 deps = ["TOML"]
 git-tree-sha1 = "00cfd92944ca9c760982747e9a1d0d5d86ab1e5a"
@@ -770,12 +1048,6 @@ git-tree-sha1 = "ad368663a5e20dbb8d6dc2fddeefe4dae0781ae8"
 uuid = "ea2cea3b-5b76-57ae-a6ef-0a8af62496e1"
 version = "5.15.3+0"
 
-[[QuadGK]]
-deps = ["DataStructures", "LinearAlgebra"]
-git-tree-sha1 = "78aadffb3efd2155af139781b8a8df1ef279ea39"
-uuid = "1fd47b50-473d-5c70-9696-f719f8f3bcdc"
-version = "2.4.2"
-
 [[REPL]]
 deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
@@ -795,12 +1067,6 @@ git-tree-sha1 = "7ad0dfa8d03b7bcf8c597f59f5292801730c55b8"
 uuid = "01d81517-befc-4cb6-b9ec-a95719d0359c"
 version = "0.4.1"
 
-[[RecursiveArrayTools]]
-deps = ["ArrayInterface", "ChainRulesCore", "DocStringExtensions", "FillArrays", "LinearAlgebra", "RecipesBase", "Requires", "StaticArrays", "Statistics", "ZygoteRules"]
-git-tree-sha1 = "ff7495c78a192ff7d59531d9f14db300c847a4bc"
-uuid = "731186ca-8d62-57ce-b412-fbd966d074cd"
-version = "2.19.1"
-
 [[Reexport]]
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
 uuid = "189a3867-3050-52da-a836-e630ba90ab69"
@@ -812,32 +1078,8 @@ git-tree-sha1 = "4036a3bd08ac7e968e27c203d45f5fff15020621"
 uuid = "ae029012-a4dd-5104-9daa-d747884805df"
 version = "1.1.3"
 
-[[Rmath]]
-deps = ["Random", "Rmath_jll"]
-git-tree-sha1 = "bf3188feca147ce108c76ad82c2792c57abe7b1f"
-uuid = "79098fc4-a85e-5d69-aa6a-4863f24498fa"
-version = "0.7.0"
-
-[[Rmath_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "68db32dff12bb6127bac73c209881191bf0efbb7"
-uuid = "f50d1b31-88e8-58de-be2c-1cc44531875f"
-version = "0.3.0+0"
-
-[[RuntimeGeneratedFunctions]]
-deps = ["ExprTools", "SHA", "Serialization"]
-git-tree-sha1 = "cdc1e4278e91a6ad530770ebb327f9ed83cf10c4"
-uuid = "7e49a35a-f44a-4d26-94aa-eba1b4ca6b47"
-version = "0.5.3"
-
 [[SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
-
-[[SciMLBase]]
-deps = ["ArrayInterface", "CommonSolve", "ConstructionBase", "Distributed", "DocStringExtensions", "IteratorInterfaceExtensions", "LinearAlgebra", "Logging", "RecipesBase", "RecursiveArrayTools", "StaticArrays", "Statistics", "Tables", "TreeViews"]
-git-tree-sha1 = "91e29a2bb257a4b992c48f35084064578b87d364"
-uuid = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
-version = "1.19.0"
 
 [[Scratch]]
 deps = ["Dates"]
@@ -847,12 +1089,6 @@ version = "1.1.0"
 
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
-
-[[Setfield]]
-deps = ["ConstructionBase", "Future", "MacroTools", "Requires"]
-git-tree-sha1 = "fca29e68c5062722b5b4435594c3d1ba557072a3"
-uuid = "efcf1570-3423-57d1-acb7-fd33fddbac46"
-version = "0.7.1"
 
 [[SharedArrays]]
 deps = ["Distributed", "Mmap", "Random", "Serialization"]
@@ -883,17 +1119,11 @@ git-tree-sha1 = "793793f1df98e3d7d554b65a107e9c9a6399a6ed"
 uuid = "276daf66-3868-5448-9aa4-cd146d93841b"
 version = "1.7.0"
 
-[[Static]]
-deps = ["IfElse"]
-git-tree-sha1 = "a8f30abc7c64a39d389680b74e749cf33f872a70"
-uuid = "aedffcd0-7271-4cad-89d0-dc628f76c6d3"
-version = "0.3.3"
-
 [[StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "3c76dde64d03699e074ac02eb2e8ba8254d428da"
+git-tree-sha1 = "3240808c6d463ac46f1c1cd7638375cd22abbccb"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.2.13"
+version = "1.2.12"
 
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
@@ -910,21 +1140,11 @@ git-tree-sha1 = "8cbbc098554648c84f79a463c9ff0fd277144b6c"
 uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 version = "0.33.10"
 
-[[StatsFuns]]
-deps = ["ChainRulesCore", "IrrationalConstants", "LogExpFunctions", "Reexport", "Rmath", "SpecialFunctions"]
-git-tree-sha1 = "95072ef1a22b057b1e80f73c2a89ad238ae4cfff"
-uuid = "4c63d2b9-4356-54db-8cca-17b64c39e42c"
-version = "0.9.12"
-
 [[StructArrays]]
 deps = ["Adapt", "DataAPI", "StaticArrays", "Tables"]
 git-tree-sha1 = "2ce41e0d042c60ecd131e9fb7154a3bfadbf50d3"
 uuid = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 version = "0.6.3"
-
-[[SuiteSparse]]
-deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
-uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [[SymPy]]
 deps = ["CommonEq", "CommonSolve", "LinearAlgebra", "Markdown", "PyCall", "RecipesBase", "SpecialFunctions"]
@@ -932,26 +1152,9 @@ git-tree-sha1 = "1ef257ecbcab8058595a68ca36a6844b41babcbd"
 uuid = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
 version = "1.0.52"
 
-[[SymbolicUtils]]
-deps = ["AbstractTrees", "Bijections", "ChainRulesCore", "Combinatorics", "ConstructionBase", "DataStructures", "DocStringExtensions", "DynamicPolynomials", "IfElse", "LabelledArrays", "LinearAlgebra", "MultivariatePolynomials", "NaNMath", "Setfield", "SparseArrays", "SpecialFunctions", "StaticArrays", "TermInterface", "TimerOutputs"]
-git-tree-sha1 = "b747ed621b12281f9bc69e7a6e5337334b1d0c7f"
-uuid = "d1185830-fcd6-423d-90d6-eec64667417b"
-version = "0.16.0"
-
-[[Symbolics]]
-deps = ["ConstructionBase", "DiffRules", "Distributions", "DocStringExtensions", "DomainSets", "IfElse", "Latexify", "Libdl", "LinearAlgebra", "MacroTools", "NaNMath", "RecipesBase", "Reexport", "Requires", "RuntimeGeneratedFunctions", "SciMLBase", "Setfield", "SparseArrays", "SpecialFunctions", "StaticArrays", "SymbolicUtils", "TreeViews"]
-git-tree-sha1 = "e17bd63d88ae90df2ef3c0505a687a534f86f263"
-uuid = "0c5d862f-8b57-4792-8d23-62f2024744c7"
-version = "3.4.1"
-
 [[TOML]]
 deps = ["Dates"]
 uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
-
-[[TableIOInterface]]
-git-tree-sha1 = "9a0d3ab8afd14f33a35af7391491ff3104401a35"
-uuid = "d1efa939-5518-4425-949f-ab857e148477"
-version = "0.1.6"
 
 [[TableTraits]]
 deps = ["IteratorInterfaceExtensions"]
@@ -969,26 +1172,9 @@ version = "1.5.2"
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
 
-[[TermInterface]]
-git-tree-sha1 = "02a620218eaaa1c1914d228d0e75da122224a502"
-uuid = "8ea1fca8-c5ef-4a55-8b96-4e9afe9c9a3c"
-version = "0.1.8"
-
 [[Test]]
 deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[[TimerOutputs]]
-deps = ["ExprTools", "Printf"]
-git-tree-sha1 = "7cb456f358e8f9d102a8b25e8dfedf58fa5689bc"
-uuid = "a759f4b9-e2f1-59dc-863e-4aeb61b1ea8f"
-version = "0.5.13"
-
-[[TreeViews]]
-deps = ["Test"]
-git-tree-sha1 = "8d0d7a3fe2f30d6a7f833a5f19f7c7a5b396eae6"
-uuid = "a2a6695c-b41b-5b7d-aed9-dbfdeacea5d7"
-version = "0.3.0"
 
 [[URIParser]]
 deps = ["Unicode"]
@@ -1196,12 +1382,6 @@ git-tree-sha1 = "cc4bf3fdde8b7e3e9fa0351bdeedba1cf3b7f6e6"
 uuid = "3161d3a3-bdf6-5164-811a-617609db77b4"
 version = "1.5.0+0"
 
-[[ZygoteRules]]
-deps = ["MacroTools"]
-git-tree-sha1 = "8c1a8e4dfacb1fd631745552c8db35d0deb09ea0"
-uuid = "700de1a5-db45-46bc-99cf-38207098b444"
-version = "0.2.2"
-
 [[libass_jll]]
 deps = ["Artifacts", "Bzip2_jll", "FreeType2_jll", "FriBidi_jll", "HarfBuzz_jll", "JLLWrappers", "Libdl", "Pkg", "Zlib_jll"]
 git-tree-sha1 = "5982a94fcba20f02f42ace44b9894ee2b140fe47"
@@ -1251,3 +1431,85 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Wayland_jll", "Wayland_prot
 git-tree-sha1 = "ece2350174195bb31de1a63bea3a41ae1aa593b6"
 uuid = "d8fb68d0-12a3-5cfd-a85a-d49703b185fd"
 version = "0.9.1+5"
+"""
+
+# ╔═╡ Cell order:
+# ╠═e8595a60-222f-11ec-0595-c9717ac06507
+# ╠═431922d9-e97a-4300-a482-2d458b66c67a
+# ╠═85cf0b95-4446-4e84-a6c3-f9d3fcf4cd61
+# ╟─53b8d020-b4a9-4c74-b0cc-dba03b6edbd3
+# ╟─4257606e-3eff-4124-aad3-517998f97d24
+# ╠═61b1bf99-507b-4379-b537-86ce040f1418
+# ╟─d17a8914-6ecf-4606-a664-7242d0f8f06c
+# ╠═2056778d-12f0-4325-920f-f6c7e453918b
+# ╟─4f6feaf8-5322-4afc-b31d-211761e222c2
+# ╟─f676a35a-c61e-4547-b176-211dd3dc647b
+# ╟─d8e3eda0-cada-4047-81cc-137a54e1b5e6
+# ╟─897cfd67-1be7-40e4-87d9-c11bc9de55d4
+# ╟─67e7f9f5-6e78-4579-97f7-7c0349b39afd
+# ╟─4d6550b8-4e9d-4437-84bd-d978e33bfdb8
+# ╠═997c5ff7-ac5d-484f-bcdf-a89194d112ee
+# ╟─19f1f8b8-0f5c-4388-b550-f4cdd7619311
+# ╠═8e1588d8-1d7a-4151-b8a1-afc3c1298887
+# ╟─09baa7ce-fc86-42a5-8130-3c8125c93f5b
+# ╠═653aa355-0c9d-4520-befd-d3f91678ffaa
+# ╟─1938fc99-5366-4bc0-a2b3-892d7281db93
+# ╠═0f723758-c34e-4a3b-ad72-853cc23b29fc
+# ╠═253ae086-b3b0-4243-b05d-4e575166aa53
+# ╠═9003d85b-eaf0-44f9-b2b7-1dd990e4fd76
+# ╟─c18c2f4b-1e5f-463f-8464-0a6387896efc
+# ╠═0f3486cc-8de9-452c-a0a1-b8c5277c1592
+# ╠═f4ee2c3e-7a1b-4d4a-99cf-0dda3ae572d7
+# ╠═cf0c4904-6b99-4af7-8aee-d03593bc2091
+# ╠═e86f3da1-ab64-4582-9fc7-8f12966c318f
+# ╟─84f78af9-2866-404e-a121-3e3c6afe617b
+# ╠═9bf041fa-c284-4425-831c-2d8a207e54e2
+# ╠═512fadab-9352-4d45-b73e-d754b30114e4
+# ╠═6612a222-06c1-47a8-b024-146ca8caea08
+# ╟─ef868e86-0a6a-47fb-b2a5-d9190cd03c0a
+# ╟─74bf0f00-bc45-4d26-9c61-f164de3d21e0
+# ╟─50432a00-fdbe-448e-a6c1-89b1d01d435d
+# ╟─4bf801a5-b443-46d1-a110-ab8096527116
+# ╠═2136e05b-bef2-4dc8-8723-3fbb8360cba0
+# ╟─5532b807-94e2-4ff2-9b65-41d1423863c6
+# ╠═904d25d1-2244-4f76-ac1c-b1fef76ff41a
+# ╟─2ba19d1c-f22e-47c8-b81c-979e0edd7348
+# ╠═9eeb302c-a277-437d-9e95-345b72d1a3a4
+# ╟─15949e72-93cf-4aa6-8524-5b55fe9eb229
+# ╟─6935e6f6-e926-4766-89a4-8d86408cc15d
+# ╟─aed97c10-bcae-4552-b522-afb0a6073c7a
+# ╟─760596e6-3937-4024-b3b4-7bfae97c4a4f
+# ╟─64d47104-23e7-492c-aa5e-c6eee7f6d10d
+# ╠═ff31fe54-2f96-4e12-bf62-395dd29fa515
+# ╟─6867d0da-516e-4924-b3f3-be7bbe75d4fc
+# ╟─9ca33e7d-aa40-4970-9072-bcf0f754ec04
+# ╟─fe385398-3bd1-4662-8411-e2c9beda9a9f
+# ╟─672d62df-7c33-4260-8c4f-a72e8a900bd3
+# ╟─c389944d-1d91-44aa-a28d-d0848bb10228
+# ╠═e7d5a0e0-0b6b-4012-88cd-7e50283fb721
+# ╟─fc2349c9-fb1f-4ce3-94fc-adb98f3170b8
+# ╠═30e16586-b504-4332-9f6c-cdeb3f9c686c
+# ╠═2f8356bc-311a-4826-861e-4852ed01bca1
+# ╠═45d7938f-a9ff-4a21-b0f8-74a7b69e1a3d
+# ╠═af547106-640f-4d89-b96d-b1d625822697
+# ╠═a2779834-7808-4bad-a97a-bc90dba2adc7
+# ╠═d9ef00bd-1ac5-4406-9cb7-ae9d90d2387e
+# ╠═76c7aed0-4bac-4a03-8a07-00583c571c52
+# ╠═180d6fe0-baeb-4c05-bfc9-213a6f1ec07c
+# ╟─a7da009c-b867-46d2-84a2-087287521aa8
+# ╠═5522536b-a0df-41f8-8525-856923f49104
+# ╠═337404a1-514b-4f40-9aa7-738d0c07d34f
+# ╠═7dcb7519-f6cc-47b6-bbf2-1896a0053a85
+# ╟─dd6b45de-fa40-4697-a372-d7f6a75bc704
+# ╟─e052a4ad-90a0-4f7f-a1e7-a35b92270d74
+# ╟─65dcc377-8278-4c08-867b-012065989b1f
+# ╟─c2c157cb-29fa-488b-a5dd-caef9e392c6b
+# ╟─1dd55ddd-2c09-4d8c-83d3-442ebcf0d579
+# ╠═0bd81932-75a6-4b74-a264-bb16ae798a44
+# ╠═c3ca6592-a758-40fc-96c5-e8609071697f
+# ╠═279a2774-a565-4ffa-9577-b2e987abed37
+# ╠═7760aee0-6ea6-432a-973f-4ab968f7f314
+# ╠═1dd28947-9fa2-42bc-9666-6e1b5e12a147
+# ╟─3cf6ffc2-0f08-41f7-adaa-9fa22f585881
+# ╟─00000000-0000-0000-0000-000000000001
+# ╟─00000000-0000-0000-0000-000000000002

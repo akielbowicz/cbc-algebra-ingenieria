@@ -16,6 +16,10 @@ Los cuadernos se encuentran en la carpeta **cuadernos**
   - [![Binder](https://mybinder.org/badge_logo.svg)  producto_interno.jl](https://mybinder.org/v2/gh/akielbowicz/cbc-algebra-ingenieria/HEAD?urlpath=pluto/open?path=/home/jovyan/cuadernos/producto_interno.jl)
 
 
+### Resolución de parciales
+
+  - [![Binder](https://mybinder.org/badge_logo.svg)  primer_parcial.jl](https://mybinder.org/v2/gh/akielbowicz/cbc-algebra-ingenieria/HEAD?urlpath=pluto/open?path=/home/jovyan/cuadernos/primer_parcial.jl)
+
 ### Tips de Pluto:
 
 [Comandos básicos de Pluto](https://github.com/fonsp/Pluto.jl/wiki/%F0%9F%94%8E-Basic-Commands-in-Pluto)
