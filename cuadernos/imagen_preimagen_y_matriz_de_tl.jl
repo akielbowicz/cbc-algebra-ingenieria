@@ -14,11 +14,16 @@ md"""
 
 # ╔═╡ e2bb7863-3a23-409c-a79c-29da1be69b77
 md"""
-Consideremos una transformación lineal  $T: \mathbb{R}^{3} \to \mathbb{R}^{3}$
+Consideremos una transformación lineal  $T: \mathbb{V} \to \mathbb{W}$
 """
 
 # ╔═╡ 283b7ab9-8460-466b-8301-ebc75b452cb7
-T(v) = [v[1],v[2],v[3]]
+T(v) = [v[1],v[2],v[3]] 
+
+# ╔═╡ 13d0a8b6-8b2b-4a30-920c-ab36e4fcc9ad
+md"""
+Quienes serian $\mathbb{V}$ y $\mathbb{W}$???
+"""
 
 # ╔═╡ f77b3062-46c1-4247-8c87-ed1104e1d40b
 v = [1,2,3] 
@@ -65,7 +70,21 @@ md"""
 """
 
 # ╔═╡ cbf93612-7c78-498b-bf1d-8b6452f67282
+md"""
+Dado un $w \in \mathbb{W}$, cuales son los $v \in \mathbb{V}$ tales que $T(v) = w$???
+"""
 
+# ╔═╡ 9e699700-653c-42db-aea5-c835c13d3046
+w = [1, 2, 4]
+
+# ╔═╡ 8481ee89-00ba-40bb-ad77-501b22507f3f
+vp = [1,1,1]
+
+# ╔═╡ f77927cb-ae2e-4e99-9963-4ba66e2b552c
+T( vp  )
+
+# ╔═╡ 5609dbcd-e79b-4232-95ab-8cae0adf96c0
+T( vp ) == w
 
 # ╔═╡ bef6c79f-a282-4489-93f5-3d7e43d15295
 md"""
@@ -933,6 +952,7 @@ version = "0.9.1+5"
 # ╟─e084e178-af34-4946-aa1c-0d05ba25cc31
 # ╟─e2bb7863-3a23-409c-a79c-29da1be69b77
 # ╠═283b7ab9-8460-466b-8301-ebc75b452cb7
+# ╟─13d0a8b6-8b2b-4a30-920c-ab36e4fcc9ad
 # ╠═f77b3062-46c1-4247-8c87-ed1104e1d40b
 # ╠═507a1f6a-4834-499e-afd9-01d7dd0df399
 # ╠═c03f6dc6-312b-4cae-821b-cc067323103d
@@ -940,12 +960,16 @@ version = "0.9.1+5"
 # ╠═69b3950a-8c21-4063-9307-0040c98badf0
 # ╠═3af6f9ac-58a4-42c1-b50c-f70b69c688ba
 # ╠═39eca280-b6b5-4d68-bcc8-47861ad37af6
-# ╠═82f00208-e3e0-43a8-b1c7-be801b6bd083
+# ╟─82f00208-e3e0-43a8-b1c7-be801b6bd083
 # ╠═6ccc9a96-e3f1-4c36-873c-c944711368fb
 # ╠═9557703c-99c2-41bb-97b0-42c0f73473b9
 # ╠═539b4e14-5f2c-4011-a324-96f19af8b8eb
 # ╟─9965ea03-d103-4ebf-b52f-f4c2fa3aacf5
-# ╠═cbf93612-7c78-498b-bf1d-8b6452f67282
+# ╟─cbf93612-7c78-498b-bf1d-8b6452f67282
+# ╠═9e699700-653c-42db-aea5-c835c13d3046
+# ╠═8481ee89-00ba-40bb-ad77-501b22507f3f
+# ╠═f77927cb-ae2e-4e99-9963-4ba66e2b552c
+# ╠═5609dbcd-e79b-4232-95ab-8cae0adf96c0
 # ╟─bef6c79f-a282-4489-93f5-3d7e43d15295
 # ╠═9b677016-eb2c-463a-be67-10ae26596ebc
 # ╠═1c86d714-d002-428d-9696-b9f68e4a4b61
