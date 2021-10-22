@@ -172,7 +172,11 @@ L₂ = λ*n + P
 Q = subs.(L₂,λ => λₛₒₗ)
 
 # ╔═╡ 6612a222-06c1-47a8-b024-146ca8caea08
-# Un poco de sanity check
+md"""
+Un poco de sanity check, comprobamos que $Q \in \pi$
+"""
+
+# ╔═╡ 604e2572-57d6-4076-b4bc-35adcceb7994
 π(Q)
 
 # ╔═╡ ef868e86-0a6a-47fb-b2a5-d9190cd03c0a
@@ -402,15 +406,37 @@ det([2u+3v u-4v])
 # ╔═╡ 279a2774-a565-4ffa-9577-b2e987abed37
 simplify(det([2u+3v u-4v]) / det([u v]))
 
-# ╔═╡ 7760aee0-6ea6-432a-973f-4ab968f7f314
-md"""
-b) 
-"""
-
 # ╔═╡ 1dd28947-9fa2-42bc-9666-6e1b5e12a147
 md"""
-La afirmacion es falsa
+En el punto **b)** La afirmación es **falsa**, pues pueden existir dos rectas que no sean paralelas y no tengan intersección
+
+Por ejemplo, si tomamos:
+
+$$L_{a} = \lambda_{a} (1,0,0) + (0,0,0)$$
+
+$$L_{b} = \lambda_{b} (0,1,0) + (0,0,1)$$
 """
+
+# ╔═╡ 2b0dc6fe-ae32-48c9-a400-ad5fb8fbef4e
+Lₐ(λ) = λ*[1,0,0]
+
+# ╔═╡ 40420c6d-122b-454d-9954-8ec29765f3f2
+Lₚ(λ) = λ*[0,1,0] + [0,0,1]
+
+# ╔═╡ be180c4f-177b-41a7-83d3-5a0220c9ad0e
+begin
+t = -1:1
+# scatter3d(,)
+end
+
+# ╔═╡ 067ffcf8-a398-4e50-bcf7-5425906f4a87
+collect(map(Array,zip(Lₐ.(t)...)))
+
+# ╔═╡ a1ce3aac-6e19-4de0-bcd5-4e86b26aab71
+let 
+x,y,z =	collect(zip(Lₐ.(t)...))
+# plot3d([x],[y],[z],xlabel="x",ylabel="y",zlabel="z")
+end
 
 # ╔═╡ 3cf6ffc2-0f08-41f7-adaa-9fa22f585881
 # Para referencia
@@ -1435,8 +1461,8 @@ version = "0.9.1+5"
 
 # ╔═╡ Cell order:
 # ╠═e8595a60-222f-11ec-0595-c9717ac06507
-# ╠═431922d9-e97a-4300-a482-2d458b66c67a
-# ╠═85cf0b95-4446-4e84-a6c3-f9d3fcf4cd61
+# ╟─431922d9-e97a-4300-a482-2d458b66c67a
+# ╟─85cf0b95-4446-4e84-a6c3-f9d3fcf4cd61
 # ╟─53b8d020-b4a9-4c74-b0cc-dba03b6edbd3
 # ╟─4257606e-3eff-4124-aad3-517998f97d24
 # ╠═61b1bf99-507b-4379-b537-86ce040f1418
@@ -1456,7 +1482,7 @@ version = "0.9.1+5"
 # ╟─1938fc99-5366-4bc0-a2b3-892d7281db93
 # ╠═0f723758-c34e-4a3b-ad72-853cc23b29fc
 # ╠═253ae086-b3b0-4243-b05d-4e575166aa53
-# ╠═9003d85b-eaf0-44f9-b2b7-1dd990e4fd76
+# ╟─9003d85b-eaf0-44f9-b2b7-1dd990e4fd76
 # ╟─c18c2f4b-1e5f-463f-8464-0a6387896efc
 # ╠═0f3486cc-8de9-452c-a0a1-b8c5277c1592
 # ╠═f4ee2c3e-7a1b-4d4a-99cf-0dda3ae572d7
@@ -1465,7 +1491,8 @@ version = "0.9.1+5"
 # ╟─84f78af9-2866-404e-a121-3e3c6afe617b
 # ╠═9bf041fa-c284-4425-831c-2d8a207e54e2
 # ╠═512fadab-9352-4d45-b73e-d754b30114e4
-# ╠═6612a222-06c1-47a8-b024-146ca8caea08
+# ╟─6612a222-06c1-47a8-b024-146ca8caea08
+# ╠═604e2572-57d6-4076-b4bc-35adcceb7994
 # ╟─ef868e86-0a6a-47fb-b2a5-d9190cd03c0a
 # ╟─74bf0f00-bc45-4d26-9c61-f164de3d21e0
 # ╟─50432a00-fdbe-448e-a6c1-89b1d01d435d
@@ -1480,26 +1507,26 @@ version = "0.9.1+5"
 # ╟─aed97c10-bcae-4552-b522-afb0a6073c7a
 # ╟─760596e6-3937-4024-b3b4-7bfae97c4a4f
 # ╟─64d47104-23e7-492c-aa5e-c6eee7f6d10d
-# ╠═ff31fe54-2f96-4e12-bf62-395dd29fa515
+# ╟─ff31fe54-2f96-4e12-bf62-395dd29fa515
 # ╟─6867d0da-516e-4924-b3f3-be7bbe75d4fc
 # ╟─9ca33e7d-aa40-4970-9072-bcf0f754ec04
 # ╟─fe385398-3bd1-4662-8411-e2c9beda9a9f
 # ╟─672d62df-7c33-4260-8c4f-a72e8a900bd3
 # ╟─c389944d-1d91-44aa-a28d-d0848bb10228
-# ╠═e7d5a0e0-0b6b-4012-88cd-7e50283fb721
+# ╟─e7d5a0e0-0b6b-4012-88cd-7e50283fb721
 # ╟─fc2349c9-fb1f-4ce3-94fc-adb98f3170b8
 # ╠═30e16586-b504-4332-9f6c-cdeb3f9c686c
-# ╠═2f8356bc-311a-4826-861e-4852ed01bca1
-# ╠═45d7938f-a9ff-4a21-b0f8-74a7b69e1a3d
+# ╟─2f8356bc-311a-4826-861e-4852ed01bca1
+# ╟─45d7938f-a9ff-4a21-b0f8-74a7b69e1a3d
 # ╠═af547106-640f-4d89-b96d-b1d625822697
 # ╠═a2779834-7808-4bad-a97a-bc90dba2adc7
-# ╠═d9ef00bd-1ac5-4406-9cb7-ae9d90d2387e
+# ╟─d9ef00bd-1ac5-4406-9cb7-ae9d90d2387e
 # ╠═76c7aed0-4bac-4a03-8a07-00583c571c52
 # ╠═180d6fe0-baeb-4c05-bfc9-213a6f1ec07c
 # ╟─a7da009c-b867-46d2-84a2-087287521aa8
-# ╠═5522536b-a0df-41f8-8525-856923f49104
+# ╟─5522536b-a0df-41f8-8525-856923f49104
 # ╠═337404a1-514b-4f40-9aa7-738d0c07d34f
-# ╠═7dcb7519-f6cc-47b6-bbf2-1896a0053a85
+# ╟─7dcb7519-f6cc-47b6-bbf2-1896a0053a85
 # ╟─dd6b45de-fa40-4697-a372-d7f6a75bc704
 # ╟─e052a4ad-90a0-4f7f-a1e7-a35b92270d74
 # ╟─65dcc377-8278-4c08-867b-012065989b1f
@@ -1508,8 +1535,12 @@ version = "0.9.1+5"
 # ╠═0bd81932-75a6-4b74-a264-bb16ae798a44
 # ╠═c3ca6592-a758-40fc-96c5-e8609071697f
 # ╠═279a2774-a565-4ffa-9577-b2e987abed37
-# ╠═7760aee0-6ea6-432a-973f-4ab968f7f314
-# ╠═1dd28947-9fa2-42bc-9666-6e1b5e12a147
+# ╟─1dd28947-9fa2-42bc-9666-6e1b5e12a147
+# ╠═2b0dc6fe-ae32-48c9-a400-ad5fb8fbef4e
+# ╠═40420c6d-122b-454d-9954-8ec29765f3f2
+# ╠═be180c4f-177b-41a7-83d3-5a0220c9ad0e
+# ╠═067ffcf8-a398-4e50-bcf7-5425906f4a87
+# ╠═a1ce3aac-6e19-4de0-bcd5-4e86b26aab71
 # ╟─3cf6ffc2-0f08-41f7-adaa-9fa22f585881
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

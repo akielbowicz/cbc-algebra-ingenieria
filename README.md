@@ -15,6 +15,7 @@ Los cuadernos se encuentran en la carpeta **cuadernos**
   
   - [![Binder](https://mybinder.org/badge_logo.svg)  producto_interno.jl](https://mybinder.org/v2/gh/akielbowicz/cbc-algebra-ingenieria/HEAD?urlpath=pluto/open?path=/home/jovyan/cuadernos/producto_interno.jl)
 
+  - [![Binder](https://mybinder.org/badge_logo.svg)  imagen_preimagen_y_matriz_de_tl.jl](https://mybinder.org/v2/gh/akielbowicz/cbc-algebra-ingenieria/HEAD?urlpath=pluto/open?path=/home/jovyan/cuadernos/imagen_preimagen_y_matriz_de_tl.jl)
 
 ### Resolución de parciales
 
